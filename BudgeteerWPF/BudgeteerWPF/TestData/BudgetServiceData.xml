@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BudgetService xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Budgets>
+    <BudgetData>
+      <BudgetName>1st Quarter of 20205</BudgetName>
+      <BudgetPeriodStart>2025-01-01T00:00:00</BudgetPeriodStart>
+      <BudgetPeriodEnd>2025-03-31T00:00:00</BudgetPeriodEnd>
+      <Identifier>Budget_638759949175490945</Identifier>
+      <InitialBudget>1500.0</InitialBudget>
+      <BudgetChanges>
+        <BudgetChangeData>
+          <BudgetChangeDate>2025-02-02T00:00:00</BudgetChangeDate>
+          <Identifier>BudgetChange_638759949175505746</Identifier>
+          <Item>costs deeply</Item>
+          <Quantity>2</Quantity>
+          <Price>500.0</Price>
+          <Type>Expense</Type>
+        </BudgetChangeData>
+        <BudgetChangeData>
+          <BudgetChangeDate>2025-02-03T00:00:00</BudgetChangeDate>
+          <Identifier>BudgetChange_638759949175510782</Identifier>
+          <Item>costs less</Item>
+          <Quantity>20</Quantity>
+          <Price>5.0</Price>
+          <Type>Expense</Type>
+        </BudgetChangeData>
+        <BudgetChangeData>
+          <BudgetChangeDate>2025-02-24T00:00:00</BudgetChangeDate>
+          <Identifier>BudgetChange_638759949175510815</Identifier>
+          <Item>gains little</Item>
+          <Quantity>1</Quantity>
+          <Price>50.0</Price>
+          <Type>Gain</Type>
+        </BudgetChangeData>
+      </BudgetChanges>
+    </BudgetData>
+    <BudgetData>
+      <BudgetName>hobbies 2025</BudgetName>
+      <BudgetPeriodStart>2025-01-01T00:00:00</BudgetPeriodStart>
+      <BudgetPeriodEnd>2025-06-30T00:00:00</BudgetPeriodEnd>
+      <Identifier>Budget_638759949175529644</Identifier>
+      <InitialBudget>300.0</InitialBudget>
+      <BudgetChanges>
+        <BudgetChangeData>
+          <BudgetChangeDate>2025-02-24T13:22:01.6516116+01:00</BudgetChangeDate>
+          <Identifier>BudgetChange_638760001216516232</Identifier>
+          <Item>tel</Item>
+          <Quantity>1</Quantity>
+          <Price>15.00</Price>
+          <Type>Expense</Type>
+        </BudgetChangeData>
+        <BudgetChangeData>
+          <BudgetChangeDate>2025-02-24T13:22:01.4690501+01:00</BudgetChangeDate>
+          <Identifier>BudgetChange_638760001214690801</Identifier>
+          <Item>?</Item>
+          <Quantity>3</Quantity>
+          <Price>75.00</Price>
+          <Type>Expense</Type>
+        </BudgetChangeData>
+        <BudgetChangeData>
+          <BudgetChangeDate>2025-02-02T00:00:00</BudgetChangeDate>
+          <Identifier>BudgetChange_638759949175529797</Identifier>
+          <Item>de muz</Item>
+          <Quantity>1</Quantity>
+          <Price>143.0</Price>
+          <Type>Expense</Type>
+        </BudgetChangeData>
+        <BudgetChangeData>
+          <BudgetChangeDate>2025-02-24T00:00:00</BudgetChangeDate>
+          <Identifier>BudgetChange_638759949175529830</Identifier>
+          <Item>bugdet raise</Item>
+          <Quantity>3</Quantity>
+          <Price>155.77</Price>
+          <Type>Gain</Type>
+        </BudgetChangeData>
+        <BudgetChangeData>
+          <BudgetChangeDate>2025-02-03T00:00:00</BudgetChangeDate>
+          <Identifier>BudgetChange_638759949175529846</Identifier>
+          <Item>sboard shoes</Item>
+          <Quantity>1</Quantity>
+          <Price>149.99</Price>
+          <Type>Expense</Type>
+        </BudgetChangeData>
+      </BudgetChanges>
+    </BudgetData>
+  </Budgets>
+</BudgetService>

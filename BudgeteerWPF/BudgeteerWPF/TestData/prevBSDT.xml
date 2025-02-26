@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BudgetService xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Budgets>
+    <BudgetData>
+      <BudgetName>Test1</BudgetName>
+      <BudgetPeriodStart>2025-02-26T16:48:00.8097308+01:00</BudgetPeriodStart>
+      <BudgetPeriodEnd>2025-02-26T16:48:00.8097309+01:00</BudgetPeriodEnd>
+      <Identifier>Budget_123456</Identifier>
+      <InitialBudget>0.0</InitialBudget>
+      <BudgetChanges />
+    </BudgetData>
+    <BudgetData>
+      <BudgetName>Test2</BudgetName>
+      <BudgetPeriodStart>2025-02-26T16:48:00.8097318+01:00</BudgetPeriodStart>
+      <BudgetPeriodEnd>2025-02-26T16:48:00.8097319+01:00</BudgetPeriodEnd>
+      <Identifier>Budget_234567</Identifier>
+      <InitialBudget>0.0</InitialBudget>
+      <BudgetChanges />
+    </BudgetData>
+    <BudgetData>
+      <BudgetName>Test3</BudgetName>
+      <BudgetPeriodStart>2025-02-26T16:48:00.8097327+01:00</BudgetPeriodStart>
+      <BudgetPeriodEnd>2025-02-26T16:48:00.8097328+01:00</BudgetPeriodEnd>
+      <Identifier>Budget_345678</Identifier>
+      <InitialBudget>0.0</InitialBudget>
+      <BudgetChanges />
+    </BudgetData>
+  </Budgets>
+</BudgetService>

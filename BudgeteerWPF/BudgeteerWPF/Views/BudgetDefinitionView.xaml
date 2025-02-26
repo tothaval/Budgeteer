@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="BudgeteerWPF.Views.BudgetDefinitionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:usercontrols="clr-namespace:BudgeteerWPF.UserControls"
+             xmlns:local="clr-namespace:BudgeteerWPF.Views"
+             xmlns:vm="clr-namespace:BudgeteerWPF.ViewModels"
+             d:DataContext="{d:DesignInstance Type=vm:BudgetViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Border>
+            <usercontrols:BudgetSetup
+                BudgetBeginDate="{Binding BudgetPeriodStart, Mode=TwoWay}"
+                BudgetEndDate="{Binding BudgetPeriodEnd, Mode=TwoWay}"
+                BudgetInitialSum="{Binding InitialBudget, Mode=TwoWay}"
+                BudgetName="{Binding BudgetName, Mode=TwoWay}"
+                IsBudgetSetup="{Binding RemoveBudgetChangeCanExecute}"
+                />
+
+        </Border>
+
+</UserControl>
