@@ -11,7 +11,6 @@ public class BudgetChangeViewModel : ObservableObject
     private IBudgetChange _BudgetChange;
     public IBudgetChange BudgetChange => _BudgetChange;
 
-
     public DateTime BudgetChangeDate
     {
         get => BudgetChange.BudgetChangeDate;
@@ -90,8 +89,6 @@ public class BudgetChangeViewModel : ObservableObject
     {
         get => BudgetChange.TotalPrice;
     }
-
-
 
     public BudgetChangeViewModel(IBudgetChange budgetChange, BudgetViewModel budgetViewModel)
     {

@@ -17,9 +17,7 @@ public partial class BudgetViewModel : ObservableObject
     private IBudget _Budget;
     public IBudget Budget => _Budget;
 
-
     public bool RemoveBudgetChangeCanExecute => SelectedBudgetChange != null;
-
 
     public DateTime BudgetPeriodStart
     {
@@ -35,7 +33,6 @@ public partial class BudgetViewModel : ObservableObject
         }
     }
 
-
     public DateTime BudgetPeriodEnd
     {
         get => _Budget.BudgetPeriodEnd;
@@ -50,12 +47,10 @@ public partial class BudgetViewModel : ObservableObject
         }
     }
 
-
     public decimal CurrentBudget
     {
         get => _Budget.GetCurrentBalance();
     }
-
 
     public string Identifier
     {
@@ -71,7 +66,6 @@ public partial class BudgetViewModel : ObservableObject
         }
     }
 
-
     public decimal InitialBudget
     {
         get => _Budget.InitialBudget;
@@ -85,7 +79,6 @@ public partial class BudgetViewModel : ObservableObject
             }
         }
     }
-
 
     public string BudgetName
     {
@@ -101,29 +94,13 @@ public partial class BudgetViewModel : ObservableObject
         }
     }
 
-
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(RemoveBudgetChangeCanExecute))]
     [NotifyCanExecuteChangedFor(nameof(RemoveChangeCommand))]
     private BudgetChangeViewModel? _SelectedBudgetChange;
 
-    partial void OnSelectedBudgetChangeChanged(BudgetChangeViewModel value)
-    {
-        //if (SelectedBudgetChange is not null)
-        //{
-        //    OnPropertyChanged(nameof(BudgetChangeDate));
-        //    OnPropertyChanged(nameof(BudgetChangeItem));
-        //    OnPropertyChanged(nameof(BudgetChangePrice));
-        //    OnPropertyChanged(nameof(BudgetChangeQuantity));
-        //    OnPropertyChanged(nameof(BudgetChangeSelectedIndex));
-        //    OnPropertyChanged(nameof(BudgetChanges));
-        //}
-    }
-
-
     [ObservableProperty]
     private ObservableCollection<BudgetChangeViewModel> _BudgetChanges = new ObservableCollection<BudgetChangeViewModel>();
-
 
     public BudgetViewModel(IBudget budget, BudgetServiceViewModel budgetServiceViewModel)
     {
@@ -139,12 +116,10 @@ public partial class BudgetViewModel : ObservableObject
         SelectedBudgetChange = BudgetChanges?.First();
         _BudgetServiceViewModel = budgetServiceViewModel;
 
-
 #if DEBUG
         Logger.Debug("BudgetViewModel(IBudget budget, BudgetServiceViewModel budgetServiceViewModel) constructor end.");
 #endif
     }
-
 
     private void BuildBudgetChangeViewModelCollection()
     {
@@ -161,7 +136,6 @@ public partial class BudgetViewModel : ObservableObject
 #endif
     }
 
-
     public bool AddBudgetChangeIfEmpty()
     {
         if (BudgetChanges.Count > 0) return false;
@@ -171,14 +145,12 @@ public partial class BudgetViewModel : ObservableObject
         return true;
     }
 
-
     public Task CurrentBudgetRefresh()
     {
         OnPropertyChanged(nameof(CurrentBudget));
 
         return Task.CompletedTask;
     }
-
 
     [RelayCommand]
     public Task AddChange()
@@ -195,9 +167,12 @@ public partial class BudgetViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(RemoveBudgetChangeCanExecute))]
     public Task RemoveChange()
     {
-        _Budget?.RemoveBudgetChange(SelectedBudgetChange.BudgetChange);
+        if (SelectedBudgetChange != null)
+        {
+            _Budget?.RemoveBudgetChange(SelectedBudgetChange.BudgetChange);
 
-        BudgetChanges.Remove(SelectedBudgetChange);
+            BudgetChanges.Remove(SelectedBudgetChange); 
+        }
 
         SelectedBudgetChange = null;
 

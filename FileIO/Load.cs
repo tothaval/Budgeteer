@@ -2,8 +2,10 @@
 
 namespace FileIO
 {
-    public class Load : ILoad
+    public class Load : IOBase, ILoad
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         // if needed, do not forget to update method parameters and the interface
         public Task<object> LoadJson()
         {
@@ -11,28 +13,32 @@ namespace FileIO
         }
 
 
-        public async Task<object> LoadXml(Type data, string targetFilePath)
+        public async Task<object> LoadXml<T>(string targetFilePath)
         {
-            var xmlSerializer = new XmlSerializer(data);
+            TargetFilePath = targetFilePath;
 
 
-            using (var reader = new StreamReader(targetFilePath))
+            XmlSerializer = new XmlSerializer(typeof(T));
+
+            using (var reader = new StreamReader(TargetFilePath))
             {
                 try
                 {
-                    var member = xmlSerializer.Deserialize(reader);
+                    Logger.Debug("loading {0} {1}", typeof(T), TargetFilePath);
+                    var member = XmlSerializer.Deserialize(reader);
 
                     return member;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.Debug("Exception :{0}", ex.Message);
 
                 }
                 finally
                 {
                     reader.Close();
-                }                
-                
+                }
+
                 return null;
             }
         }

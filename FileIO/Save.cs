@@ -1,9 +1,11 @@
-﻿using System.Xml.Serialization;
+﻿using NLog;
+using System.Xml.Serialization;
 
 namespace FileIO;
 
-public class Save : ISave
+public class Save : IOBase, ISave
 {
+    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
     // if needed, do not forget to add the data object to the method parameters
     // and update the interface
@@ -14,16 +16,28 @@ public class Save : ISave
 
     public async Task SaveAsXml<T>(T data, string targetFilePath)
     {
-        if (data is null || targetFilePath.Equals(string.Empty))
+        if (data is null || string.IsNullOrWhiteSpace(targetFilePath))
             return;
 
-        var xmlSerializer = new XmlSerializer(data.GetType());
+        TargetFilePath = targetFilePath;
 
-        await using (var writer = new StreamWriter(targetFilePath))
+        XmlSerializer = new XmlSerializer(typeof(T));
+
+        try
         {
-            xmlSerializer.Serialize(writer, data);
+            Logger.Debug("saving {0} {1}", typeof(T), TargetFilePath);
 
-            writer.Close();
+            await using (var writer = new StreamWriter(TargetFilePath))
+            {
+                XmlSerializer.Serialize(writer, data);
+
+                writer.Close();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Logger.Debug("Exception :{0}", ex.Message);
         }
 
         return;

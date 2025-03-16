@@ -8,17 +8,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-
     <TabControl>
-        <TabItem Header="Overview">            
+        <TabItem Header="Overview">
             <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
 
-            </Grid.RowDefinitions>
+                </Grid.RowDefinitions>
 
-            <Border>
+                <Border>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -44,50 +43,71 @@
                                 HorizontalContentAlignment="Left"
                                 Padding="5 2"
                                 Grid.Column="2"/>
-                        
-                    <local:BudgetDefinitionView DataContext="{Binding SelectedBudget}"                                                
+
+                        <local:BudgetDefinitionView DataContext="{Binding SelectedBudget}"                                                
                                                 Grid.Row="1"
                                                 Grid.Column="0"
-                                                Grid.ColumnSpan="3"/>                    
+                                                Grid.ColumnSpan="3"/>
                     </Grid>
-                
-                
-            </Border>
 
 
-            <ListBox ItemsSource="{Binding Budgets}"
+                </Border>
+
+
+                <ListBox ItemsSource="{Binding Budgets}"
                      SelectionMode="Single"
                      SelectedItem="{Binding SelectedBudget}"
                      Grid.Row="1">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="{Binding BudgetName}"
-                                       FontSize="14"
-                                       FontWeight="SemiBold"/>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+
+                            <StackPanel Orientation="Vertical">
+
+                                <TextBlock Text="{Binding BudgetName}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold">
+                                                                               
+                                    <TextBlock.ToolTip>
+                                        <TextBlock 
+                                            FontSize="14"
+                                            FontWeight="SemiBold">
+                                            <Run Text="(changes:"/>
+                                            <Run Text="{Binding BudgetChanges.Count, Mode=OneWay}"/>
+                                            
+                                            <Run Text=")"/>
+                                        </TextBlock>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
+
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding InitialBudget, StringFormat=c}"
                                                FontSize="12" Margin="0 0 10 0"
                                                FontWeight="Normal"
                                                Foreground="Blue"
-                                               VerticalAlignment="Bottom"/>
+                                               VerticalAlignment="Bottom"
+                                               MinWidth="70"
+                                               />
                                     <TextBlock VerticalAlignment="Bottom" FontSize="10" Text="{Binding BudgetPeriodStart,StringFormat=d}"/>
                                     <TextBlock VerticalAlignment="Bottom" FontSize="10" Text=" - "/>
                                     <TextBlock VerticalAlignment="Bottom" FontSize="10" Text="{Binding BudgetPeriodEnd, StringFormat=d}"/>
+                                    <TextBlock VerticalAlignment="Bottom" FontSize="10" Text=" - "/>
+                                    <TextBlock VerticalAlignment="Bottom" FontSize="10" Text="{Binding BudgetChanges.Count}"/>
+                                    <TextBlock VerticalAlignment="Bottom" FontSize="10" Text=" change(s)"/>
                                 </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                            </StackPanel>
+
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
 
-        </Grid>
+            </Grid>
         </TabItem>
 
         <TabItem Header="Current Budget">
             <Border>
                 <local:BudgetAdministrationView BudgetVM="{Binding SelectedBudget,UpdateSourceTrigger=PropertyChanged}"/>
-            </Border>            
+            </Border>
         </TabItem>
     </TabControl>
 

@@ -32,10 +32,9 @@ public class BudgetManagementUtilityServiceTest
 
         IdentifierTestClass identifierTestClass = new IdentifierTestClass();
 
-        var result = BudgetManagementUtilityService.GetIdentifier(identifierTestClass);
+        var result = BudgetManagementUtilityService.GetIdentifier<IdentifierTestClass>();
 
         Assert.That(result.StartsWith("IdentifierTestClass_"));
-
     }
 
 

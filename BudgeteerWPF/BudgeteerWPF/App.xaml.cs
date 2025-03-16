@@ -2,6 +2,8 @@
 using BudgetManagement;
 using Microsoft.Extensions.DependencyInjection;
 using NLog;
+using System.Dynamic;
+using System.Threading.Tasks;
 using System.Windows;
 using LogLevel = NLog.LogLevel;
 
@@ -11,6 +13,8 @@ namespace BudgeteerWPF;
 /// Interaction logic for App.xaml
 /// 
 /// to do:
+/// 
+///     keep enum value on add budget change
 /// 
 ///     implement value validation (dates, avoid negative values, give warning when budget is exceeded)
 ///          
@@ -29,15 +33,17 @@ namespace BudgeteerWPF;
 /// </summary>
 public partial class App : Application
 {
+    // interessant, aber potenziell nervig, falls es eine app mit gleicher Signatur gibt, z.b.
+    // weil die von hier kopiert wurde, kann es nicht mehr starten.
+    private static Mutex _InstanceMutex;
+    private static string _ApplicationKey =
+        @"Budgeteer {15839914-5721-46DC-999F-EDE342F9450F}";// online generated uuid "cf645c2c-b646-4c2e-be76-6b15f1a4f6d3"
 
-#if DEBUG
     // DEBUG logger
     private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-#endif
 
     ServiceProvider provider;
     ServiceCollection services = new ServiceCollection();
-
 
     // no need, but i was curious. now again i know, it doesn't show.
     //    public App()
@@ -51,34 +57,43 @@ public partial class App : Application
     //#endif
     //    }
 
-
     /// <summary>
     /// awaits BudgetService.SaveBudgetServiceData() before exit
     /// </summary>
     /// <param name="e"></param>
     protected override async void OnExit(ExitEventArgs e)
     {
+        // c# feature test: dynamic keyword & expando object
+        //dynamic obj = new ExpandoObject();
+        //obj.Text = "Hallo Welt";
+        //obj.Value = 115.17m;
+        //obj.Increment = (Action)(() => obj.Value++);
+
+        //Logger.Debug(obj);
+        //Logger.Debug(obj.Text);
+        //Logger.Debug(obj.Value);
+
+        //obj.Increment();
+        
+        //Logger.Debug(obj.Value);
 
 #if DEBUG
         Logger.Debug("OnExit start.");
 #endif
 
-
         BudgetService budgetService = provider.GetRequiredService<BudgetService>();
-
-
-        await budgetService.SaveBudgetServiceData();
-
+                
+        await budgetService.SaveBudgetServiceData();        
 
 #if DEBUG
         Logger.Debug("OnExit complete.");
 #endif
 
-
         base.OnExit(e);
 
-    }
+        KillInstance(e.ApplicationExitCode);
 
+    }
 
     /// <summary>
     /// instantiates required classes via dependency injection
@@ -86,8 +101,9 @@ public partial class App : Application
     /// <param name="e"></param>
     protected override void OnStartup(StartupEventArgs e)
     {
+        SplashScreen splashScreen = new SplashScreen();
+        splashScreen.Show();
 
-#if DEBUG
         NLog.LogManager.Setup().LoadConfiguration(builder =>
         {
             builder.ForLogger().FilterMinLevel(LogLevel.Info).WriteToConsole();
@@ -96,8 +112,16 @@ public partial class App : Application
 
         services.AddLogging((o) => LogManager.GetCurrentClassLogger());
 
+#if DEBUG
         Logger.Debug("OnStartup start.");
 #endif
+
+        if (StartInstance())
+        {
+            Logger.Debug("There is already an active instance.");
+
+            Application.Current.Shutdown(1);
+        }
 
         services.AddSingleton<MainWindow>();
 
@@ -107,13 +131,11 @@ public partial class App : Application
 
         services.AddSingleton<MainViewModel>();
 
-
 #if DEBUG
         Logger.Debug("OnStartup building provider..");
 #endif
 
         provider = services.BuildServiceProvider();
-
 
         MainWindow mainWindow = provider.GetRequiredService<MainWindow>();
 
@@ -123,6 +145,7 @@ public partial class App : Application
         Logger.Debug("OnStartup almost complete..");
 #endif
 
+        splashScreen.Close();
         mainWindow.Show();
 
 #if DEBUG
@@ -131,6 +154,49 @@ public partial class App : Application
 
 
         base.OnStartup(e);
+    }
+
+    public static bool StartInstance()
+    {
+        _InstanceMutex = new Mutex(true, _ApplicationKey);
+
+        bool _InstanceMutexIsInUse = false;
+
+        try
+        {
+            _InstanceMutexIsInUse = !_InstanceMutex.WaitOne(TimeSpan.Zero, true);
+        }
+        catch (AbandonedMutexException)
+        {
+            KillInstance();
+            _InstanceMutexIsInUse = false;
+        }
+        catch (Exception)
+        {
+            _InstanceMutex.Close();
+            _InstanceMutexIsInUse = false;
+        }
+
+        return _InstanceMutexIsInUse;
+    }
+
+    public static void KillInstance(int code = 0)
+    {
+        if (_InstanceMutex is null) return;
+
+        if (code == 0)
+        {
+            try
+            {
+                _InstanceMutex.ReleaseMutex();
+            }
+            catch (Exception)
+            {
+
+            }
+
+            _InstanceMutex.Close();
+        }
     }
 
 }

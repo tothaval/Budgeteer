@@ -25,30 +25,29 @@ public class BudgetService
     }
 #endif
 
-
     private string targetFilePath = string.Empty;
 
     private ObservableCollection<IBudget> _Budgets = new ObservableCollection<IBudget>();
 
     public ObservableCollection<IBudget> Budgets => _Budgets;
 
-
     public BudgetService(string? dataStoragefilePath = null)
     {
-        targetFilePath = dataStoragefilePath;
 
-        if (dataStoragefilePath is null || dataStoragefilePath.Equals(string.Empty))
+        if (string.IsNullOrWhiteSpace(dataStoragefilePath))
         {
             targetFilePath = Path.GetDirectoryName(Environment.ProcessPath) + "\\BudgetServiceData.xml";
+        }
+        else
+        {
+            targetFilePath = dataStoragefilePath;
         }
 
         // data loading probably needs to be implemented in a better way, like file checking and so on.
         BudgetServiceData budgetServiceData = LoadBudgetServiceData(targetFilePath).Result;
 
-        AddBudgetServiceData(budgetServiceData);
-
+       _ = AddBudgetServiceData(budgetServiceData);
     }
-
 
     public bool AddBudget(IBudget budget)
     {
@@ -63,7 +62,6 @@ public class BudgetService
         return false;
     }
 
-
     public async Task AddBudgetServiceData(BudgetServiceData budgetServiceData)
     {
         if (budgetServiceData is null)
@@ -72,8 +70,8 @@ public class BudgetService
         foreach (BudgetData item in budgetServiceData.Budgets)
         {
             IBudget budget = await item.GetBudget();
-
-            if (!_Budgets.Contains(budget))
+            
+            if (!_Budgets.Includes(budget))
             {
                 _Budgets.Add(budget);
             }
@@ -81,7 +79,6 @@ public class BudgetService
 
         return;
     }
-
 
     public async Task<BudgetServiceData> GetBudgetServiceData()
     {
@@ -92,12 +89,11 @@ public class BudgetService
         return budgetServiceData;
     }
 
-
     public async Task<BudgetServiceData> LoadBudgetServiceData(string filePath)
     {
         BudgetServiceData budgetServiceData = null;
 
-        if (filePath is null || targetFilePath.Equals(string.Empty) || !File.Exists(filePath))
+        if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
         {
 #if DEBUG
             Logger.Error("File not found: {0}", filePath);
@@ -105,14 +101,12 @@ public class BudgetService
             return null;
         }
 
-        object loadedData = await new Load().LoadXml(typeof(BudgetServiceData), filePath);
+        object loadedData = await new Load().LoadXml<BudgetServiceData>(filePath);
 
         budgetServiceData = (BudgetServiceData)loadedData;
 
-
         return budgetServiceData;
     }
-
 
     public IBudget NewBudget()
     {
@@ -122,7 +116,6 @@ public class BudgetService
 
         return budget;
     }
-
 
     public bool RemoveBudget(IBudget budget)
     {
@@ -136,13 +129,13 @@ public class BudgetService
         return false;
     }
 
-
     public async Task SaveBudgetServiceData()
     {
         BudgetServiceData budgetServiceData = await GetBudgetServiceData();
 
         await new Save().SaveAsXml<BudgetServiceData>(budgetServiceData, targetFilePath);
-    }
 
+        return;
+    }
 
 }

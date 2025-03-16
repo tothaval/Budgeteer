@@ -15,14 +15,13 @@ public class Budget : IBudget
 
     public Budget()
     {
-        Identifier = BudgetManagementUtilityService.GetIdentifier(this);
+        Identifier = BudgetManagementUtilityService.GetIdentifier<Budget>();
 
         BudgetPeriodStart = DateTime.Now;
         BudgetPeriodEnd = DateTime.Now;
         InitialBudget = 0.0m;
         BudgetName = "new budget";
     }
-
 
     public bool AddBudgetChange(IBudgetChange budgetChange)
     {
@@ -38,7 +37,6 @@ public class Budget : IBudget
         return false;
     }
 
-
     public decimal GetCurrentBalance()
     {
         decimal balance = InitialBudget;
@@ -51,16 +49,12 @@ public class Budget : IBudget
         return balance;
     }
 
-
     public decimal GetExpenses()
     {
-        // problem: it ignores quantity
         var values = BudgetChanges.Where((d) => d.Type.Equals(BudgetChangeType.Expense)).Select((d) => d.TotalPrice);
 
         return BudgetManagementUtilityService.CalculateValuesFromList(values);
-
     }
-
 
     public decimal GetGains()
     {
@@ -68,7 +62,6 @@ public class Budget : IBudget
 
         return BudgetManagementUtilityService.CalculateValuesFromList(values);
     }
-
 
     public IBudgetChange NewBudgetChange()
     {
@@ -78,7 +71,6 @@ public class Budget : IBudget
 
         return budgetChange;
     }
-
 
     public bool RemoveBudgetChange(IBudgetChange budgetChange)
     {
@@ -93,5 +85,4 @@ public class Budget : IBudget
 
         return false;
     }
-
 }

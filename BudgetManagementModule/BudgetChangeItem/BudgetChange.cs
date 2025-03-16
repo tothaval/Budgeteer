@@ -5,7 +5,6 @@ namespace BudgetManagement.BudgetChangeItem;
 public class BudgetChange : IBudgetChange
 {
 
-    // until a proper object creation via factory or so is done, i'll leave this as required
     public string Identifier { get; set; }
 
     public BudgetChangeType Type { get; set; } = BudgetChangeType.Expense;
@@ -18,19 +17,15 @@ public class BudgetChange : IBudgetChange
 
     public decimal Price { get; set; } = 0.0m;
 
-
     /// <summary>
     /// returns Quantity * Price;
     /// </summary>
     public decimal TotalPrice => Quantity * Price;
 
-
     public BudgetChange()
     {
-        Identifier = BudgetManagementUtilityService.GetIdentifier(this);
-
+        Identifier = BudgetManagementUtilityService.GetIdentifier<BudgetChange>();
     }
-
 
     /// <summary>
     /// depending on BudgetChangeType, this returns
@@ -46,6 +41,5 @@ public class BudgetChange : IBudgetChange
 
         return TotalPrice;
     }
-
 
 }

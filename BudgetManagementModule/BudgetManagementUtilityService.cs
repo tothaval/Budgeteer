@@ -10,18 +10,13 @@ public static class BudgetManagementUtilityService
         if (decimals is null || decimals.Count() == 0)
             return sum;
 
-        foreach (decimal item in decimals)
-        {
-            sum += item;
-        }
-
-        return sum;
+        return decimals.Sum();
     }
 
 
-    public static string GetIdentifier<T>(T type)
+    public static string GetIdentifier<T>()
     {
-        string identifier = $"{type.GetType().Name}_{DateTime.Now.Ticks}";
+        string identifier = $"{typeof(T).Name}_{DateTime.Now.Ticks}";
 
         return identifier;
     }
